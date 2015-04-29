@@ -1,15 +1,14 @@
 package Agentes;
 
-import java.util.Scanner;
 
+import java.util.Scanner;
 import jade.core.Agent;
 import Behaviours.*;
 import jade.lang.acl.ACLMessage;
 import jade.domain.FIPANames.InteractionProtocol;
 import jade.core.AID;
 
-
-public class Inicial extends Agent{
+public class Enemigo extends Agent{
 
 	private static AID Ser;
 	private static String Equipo;
@@ -18,7 +17,7 @@ public class Inicial extends Agent{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+
 	private Scanner entrada;
 	
 	public  void setInfo(){
@@ -44,8 +43,8 @@ public class Inicial extends Agent{
 		return Ser;
 	}
 	
-	public static int getEquipoI(){
-		return Equipo.toCharArray()[0]-48-6;
+	public static char getEquipoI(){
+		return Equipo.toCharArray()[0];
 	}
 	public static String getEquipo(){
 		return Equipo;
@@ -56,9 +55,9 @@ public class Inicial extends Agent{
 	}
 	
 	public void setup(){
-		
+	
+		//setInfo();
 		this.addBehaviour(new B_pagAmar());
-		
 		
 	}
 }

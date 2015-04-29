@@ -2,6 +2,7 @@ package Behaviours;
 
 import java.util.ArrayList;
 
+import Agentes.Inicial;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
@@ -17,16 +18,20 @@ public class B_Aestrella extends Behaviour {
 	private int visitados;					   // Experimentacion. Lleva la cuenta de los nodos Visitados.
 	private int abiertosMax;                   // Experimentación. Lleva la cuenta del número máximo de Estados Abiertos.
 	private int cerradosMax;                   // Experimentación. Lleva la cuenta del número máximo de Estados Cerrados.
-
+	private int solnofound;
+	private String nombClase;
 	
-	public B_Aestrella(B_Analiza inicial) {
+	public B_Aestrella(B_Analiza inicial, String A) {
 		Abiertos=new ArrayList<B_Analiza>();
 		Cerrados=new ArrayList<B_Analiza>();
 		CaminoSol = new ArrayList<B_Analiza>();
 		visitados=0;
 		abiertosMax=0;
 		cerradosMax=0;
+		solnofound=0;
 		AStar(inicial);
+		nombClase=A;
+		
 	}
 	
 	public void AStar(B_Analiza inicial){
@@ -80,12 +85,13 @@ public class B_Aestrella extends Behaviour {
 			solucionar();
 			
 		}
-		else System.out.println("Solucion no encontrada.");
-		
+		else{ System.out.println("Solucion no encontrada.");
+		solnofound=1;
+		}
 	}
 	
 	public int AbiertosMejorCoste(){
-		
+		/*
 		int MenorCoste=Abiertos.get(0).getCosteTotal();
 		int posicion=0;
 		
@@ -94,9 +100,9 @@ public class B_Aestrella extends Behaviour {
 				MenorCoste=Abiertos.get(i+1).getCosteTotal();
 				posicion=i+1;
 			}
-		}
+		}*/
 		
-		return posicion;
+		return 0;
 	}
 	
 	
@@ -220,14 +226,14 @@ public void repeat(ArrayList<B_Analiza> Hijo){
 	public void action(){
 		
 		
-		String a=Integer.toString(0);
+		String a="0";
 		if(CaminoSol.size()>1){
 			System.out.println("PASO: "+CaminoSol.get(1).getMove());
 			a=Integer.toString(CaminoSol.get(1).getMove());
 		}
 		
-		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-		AID aux=new AID("entorno3213",AID.ISLOCALNAME);
+	
+		AID aux=Inicial.getSer();
 	
 		
 		

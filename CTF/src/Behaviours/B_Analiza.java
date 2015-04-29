@@ -3,17 +3,21 @@ package Behaviours;
 import java.util.ArrayList;
 
 import Agentes.Inicial;
+import Agentes.Enemigo;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 
 public class B_Analiza extends Behaviour{
 
-	private static int contador; 
+	private static int contador;
+	private static int contador1;
 	
 	private static int ancho, alto, visx, visy;
 	private int x, y;
 	private static char[][] mapa;
 	private int movim;  
+	
+	private String nombClase;
 	
 	private int xfinal;
 	private int yfinal;
@@ -24,14 +28,14 @@ public class B_Analiza extends Behaviour{
 	private int costeTotal;
 	
 	
-	public B_Analiza(ACLMessage A, int an, int alt, int vx, int vy){
+	public B_Analiza(ACLMessage A, int an, int alt, int vx, int vy, String B){
 		
 		
 		ancho=an;
 		alto=alt;
 		visx=vx;
 		visy=vy;
-		
+		nombClase=B;
 		String aux= A.getContent();
 		int i=0;
 		int j=0;
@@ -77,12 +81,19 @@ public class B_Analiza extends Behaviour{
 		movim=8;
 		
 		setfinal();
-		setContador();
+		if(nombClase.equals("Agentes.Inicial"))
+			setContador();
+		else if(nombClase.equalsIgnoreCase("Agentes.Enemigo"))
+			setcontador1();
 		
 		DManhattan=distanciaManhattan();
 		costeTotal=0;
 		
 		
+	}
+	
+	public static void setcontador1(){
+		contador1=0;
 	}
 	
 	public B_Analiza(B_Analiza Padre, int mov){
@@ -93,7 +104,7 @@ public class B_Analiza extends Behaviour{
 		visy=Padre.visy;
 		x=Padre.x;
 		y=Padre.y;
-		
+		nombClase=Padre.nombClase;
 		movim=mov;
 		mapa=Padre.mapa;//Actualizar posicion;
 		//verMapa();
@@ -110,11 +121,13 @@ public class B_Analiza extends Behaviour{
 	
 	
 	
-	public B_Analiza(ACLMessage A){
+	public B_Analiza(ACLMessage A, String B){
 		
 		movim=0;
 		
 		int i=0, j=0;
+		
+		nombClase=B;
 		
 		String aux=A.getContent();
 		
@@ -180,7 +193,10 @@ public class B_Analiza extends Behaviour{
 		y=Integer.parseInt(aux.substring(indicesfinales[4]+1, indicesfinales[5]));
 		
 		setfinal();
-		setContador();
+		if(nombClase.equals("Agentes.Inicial"))
+			setContador();
+		else if(nombClase.equalsIgnoreCase("Agentes.Enemigo"))
+			setcontador1();
 		
 		DManhattan=distanciaManhattan();
 		costeTotal=0;
@@ -193,30 +209,58 @@ public class B_Analiza extends Behaviour{
 	public void setfinal(){
 		
 		int[] pos;
-		
-		if(Inicial.getEquipo().equals("7")){
-			if(mapa[y][x]!='5'){
-				pos=findBandera();
-				yfinal=pos[0];
-				xfinal=pos[1];
+		if(nombClase.equals("Agentes.Inicial")){
+			if(Inicial.getEquipo().equals("7")){
+				if(mapa[y][x]!='5'){
+					pos=findBandera();
+					yfinal=pos[0];
+					xfinal=pos[1];
+				}
+				else{
+					verMapa();
+					pos=findBase();
+					yfinal=pos[0];
+					xfinal=pos[1];
+				}
 			}
-			else{
-				verMapa();
-				pos=findBase();
-				yfinal=pos[0];
-				xfinal=pos[1];
+			else if(Inicial.getEquipo().equals("8")){
+				if(mapa[y][x]!='6'){
+					pos=findBandera();
+					yfinal=pos[0];
+					xfinal=pos[1];
+				}
+				else{
+					pos=findBase();
+					yfinal=pos[0];
+					xfinal=pos[1];
+				}
 			}
 		}
-		if(Inicial.getEquipo().equals("8")){
-			if(mapa[y][x]!='6'){
-				pos=findBandera();
-				yfinal=pos[0];
-				xfinal=pos[1];
+		else if(nombClase.equals("Agentes.Enemigo")){
+			if(Enemigo.getEquipo().equals("7")){
+				if(mapa[y][x]!='5'){
+					pos=findBandera();
+					yfinal=pos[0];
+					xfinal=pos[1];
+				}
+				else{
+					verMapa();
+					pos=findBase();
+					yfinal=pos[0];
+					xfinal=pos[1];
+				}
 			}
-			else{
-				pos=findBase();
-				yfinal=pos[0];
-				xfinal=pos[1];
+			if(Enemigo.getEquipo().equals("8")){
+				if(mapa[y][x]!='6'){
+					pos=findBandera();
+					yfinal=pos[0];
+					xfinal=pos[1];
+				}
+				else{
+					pos=findBase();
+					yfinal=pos[0];
+					xfinal=pos[1];
+				}
 			}
 		}
 	}
@@ -227,17 +271,33 @@ public class B_Analiza extends Behaviour{
 		while(!encontrado && i<alto){
 			j=0;
 			while(!encontrado&&j<ancho){
-				if(Inicial.getEquipo().equals("7")){
-					if(mapa[i][j]=='A'){
-						encontrado=true;
+				if(nombClase.equals("Agentes.Inicial")){
+					if(Inicial.getEquipo().equals("7")){
+						if(mapa[i][j]=='A'){
+							encontrado=true;
+						}
+						else j++;
 					}
-					else j++;
+					if(Inicial.getEquipo().equals("8")){
+						if(mapa[i][j]=='B'){
+							encontrado=true;
+						}
+						else j++;
+					}
 				}
-				if(Inicial.getEquipo().equals("8")){
-					if(mapa[i][j]=='B'){
-						encontrado=true;
+				if(nombClase.equals("Agentes.Enemigo")){
+					if(Enemigo.getEquipo().equals("7")){
+						if(mapa[i][j]=='A'){
+							encontrado=true;
+						}
+						else j++;
 					}
-					else j++;
+					if(Enemigo.getEquipo().equals("8")){
+						if(mapa[i][j]=='B'){
+							encontrado=true;
+						}
+						else j++;
+					}
 				}
 			}
 			
@@ -260,20 +320,35 @@ public class B_Analiza extends Behaviour{
 		while(!encontrado && i<alto){
 			j=0;
 			while(!encontrado&&j<ancho){
-				if(Inicial.getEquipo().equals("7")){
-					if(mapa[i][j]=='B'){
-						encontrado=true;
+				if(nombClase.equals("Agentes.Inicial")){
+					if(Inicial.getEquipo().equals("7")){
+						if(mapa[i][j]=='B'){
+							encontrado=true;
+						}
+						else j++;
 					}
-					else j++;
+					if(Inicial.getEquipo().equals("8")){
+						if(mapa[i][j]=='A'){
+							encontrado=true;
+						}
+						else j++;
+					}
 				}
-				if(Inicial.getEquipo().equals("8")){
-					if(mapa[i][j]=='A'){
-						encontrado=true;
+				else if(nombClase.equals("Agentes.Enemigo")){
+					if(Enemigo.getEquipo().equals("7")){
+						if(mapa[i][j]=='B'){
+							encontrado=true;
+						}
+						else j++;
 					}
-					else j++;
+					else if(Enemigo.getEquipo().equals("8")){
+						if(mapa[i][j]=='A'){
+							encontrado=true;
+						}
+						else j++;
+					}
 				}
 			}
-			
 			if(!encontrado){
 				i++;
 			}
@@ -416,8 +491,12 @@ public class B_Analiza extends Behaviour{
 			for(int i=x-1; i<x+2;i++){
 				
 				if(m!=y||i!=x){
-					
-					if(mapa[m][i]!='H'){
+					char equipo;
+					if(nombClase.equals("Agentes.Inicial"))
+						equipo = (char) Inicial.getEquipoI();
+					else
+						equipo = (char) (Enemigo.getEquipoI()-6);
+					if(mapa[m][i]!='H'&& mapa[m][i]!=equipo){
 					
 						movimientos[e]=new B_Analiza(this, movimpos[o]);
 						movimientos[e].TotalCost();
@@ -517,6 +596,13 @@ public class B_Analiza extends Behaviour{
 		
 	}
 	
+	public int getxfinal(){
+		return xfinal;
+	}
+	public int getyfinal(){
+		return yfinal;
+	}
+	
 	public static int getancho(){
 		return ancho;
 	}
@@ -534,14 +620,25 @@ public class B_Analiza extends Behaviour{
 	
 	
 	public void action(){
-		
-		if(contador==0){
-			verMapa();
-			contador++;
-			verAtributos();
-			System.out.println("Entra");
-			myAgent.addBehaviour(new B_Aestrella(this));
-			System.out.println("Sale");
+		if(nombClase.equals("Agentes.Inicial")){
+			if(contador==0){
+				verMapa();
+				contador++;
+				//verAtributos();
+				System.out.println(getxfinal()+","+getyfinal());
+				myAgent.addBehaviour(new B_Aestrella(this, nombClase));
+
+			}
+		}
+		else if(nombClase.equals("Agentes.Enemigo")){
+			if(contador1==0){
+				verMapa();
+				contador1++;
+				//verAtributos();
+				System.out.println(getxfinal()+","+getyfinal());
+				myAgent.addBehaviour(new B_Aestrella(this, nombClase));
+
+			}
 		}
 	}
 	
