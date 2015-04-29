@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="jade.domain.FIPAService"/>
+<fullyQualifiedTypeName name="jade.proto.SimpleAchieveREInitiator"/>
+<fullyQualifiedTypeName name="Behaviours.B_conexPlat"/>
+<fullyQualifiedTypeName name="jade.core.BehaviourID"/>
+<fullyQualifiedTypeName name="jade.lang.acl.ACLMessage"/>
+<fullyQualifiedTypeName name="java.util.Scanner"/>
+<fullyQualifiedTypeName name="Agentes.Inicial"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="jade.proto.AchieveREResponder"/>
+<fullyQualifiedTypeName name="jade.lang.acl.MessageTemplate"/>
+<fullyQualifiedTypeName name="jade.core.Agent"/>
+<fullyQualifiedTypeName name="jade.domain.FIPAAgentManagement.FailureException"/>
+</qualifiedTypeNameHistroy>

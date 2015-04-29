@@ -1,0 +1,30 @@
+package Agentes;
+
+import jade.core.Agent;
+import Behaviours.*;
+import jade.lang.acl.ACLMessage;
+import jade.domain.FIPANames.InteractionProtocol;
+import jade.core.AID;
+
+
+public class Inicial extends Agent{
+
+	
+	
+	public void setup(){
+		String Equipo="8";
+		String Clave="a";
+		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+		msg.addReceiver(new AID("entorno3213",AID.ISLOCALNAME));
+		msg.setContent(Equipo+Clave);
+		msg.setProtocol(InteractionProtocol.FIPA_REQUEST);
+		
+		
+		B_conexPlat a= new B_conexPlat(this,msg);
+		this.addBehaviour(a);
+		
+		//B_DoNothing b= new B_DoNothing();
+		//this.addBehaviour(b);
+		
+	}
+}

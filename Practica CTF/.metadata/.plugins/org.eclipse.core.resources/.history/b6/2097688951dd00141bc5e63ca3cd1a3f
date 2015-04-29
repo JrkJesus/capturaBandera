@@ -1,0 +1,20 @@
+package Agentes;
+
+import jade.core.Agent;
+import Behaviours.*;
+import jade.lang.acl.ACLMessage;
+
+
+public class Inicial extends Agent{
+
+	
+	
+	public void setup(){
+		ACLMessage A= new ACLMessage();
+		A.setContent("7");
+		
+		B_conexPlat a= new B_conexPlat(this, A);
+		this.addBehaviour(a);
+		
+	}
+}

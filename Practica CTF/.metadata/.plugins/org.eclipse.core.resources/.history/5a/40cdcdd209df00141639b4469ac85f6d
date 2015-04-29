@@ -1,0 +1,97 @@
+package Behaviours;
+
+import jade.core.behaviours.Behaviour;
+import jade.lang.acl.ACLMessage;
+
+public class B_Analiza extends Behaviour{
+
+	int ancho, alto, visx, visy, x, y;
+	char[][] mapa;
+	
+	public B_Analiza(ACLMessage A){
+		int i=0, j=0;
+		
+		String aux=A.getContent();
+		
+		int indicesfinales[];
+		
+		
+		while(!aux.substring(i,i+1).equals(",")){
+			i++;
+		}
+		
+		j=i+1;
+		while(!aux.substring(j,j+1).equals(",")){
+			j++;
+		}
+		
+		ancho=Integer.parseInt(aux.substring(0, i));
+		alto=Integer.parseInt(aux.substring(i+1,j));
+		
+		mapa=new char[alto][ancho];
+		
+		indicesfinales=new int[6+alto];
+		indicesfinales[0]=i;
+		indicesfinales[1]=j;
+		
+		j++;
+		i=2;
+		
+		int posx=0;
+		int posy=0;
+		
+		for(; j<aux.length();j++){
+			
+			if(i>5){
+				
+				mapa[posx][posy]=aux.charAt(j);
+				posy++;
+			
+				if(posy==ancho){
+					posx++;
+					posy=0;
+				}
+			}
+			
+			if(aux.substring(j)==","){
+				indicesfinales[i]=j;
+				i++;
+			}
+		}
+		
+		//Casca aqui
+		visx=Integer.parseInt(aux.substring(indicesfinales[1]+1, indicesfinales[2]));
+		visy=Integer.parseInt(aux.substring(indicesfinales[2]+1, indicesfinales[3]));
+		x=Integer.parseInt(aux.substring(indicesfinales[3]+1, indicesfinales[4]));
+		y=Integer.parseInt(aux.substring(indicesfinales[4]+1, indicesfinales[5]));
+		
+		
+	}
+	
+	
+	
+	public void verMapa(){
+		
+		for(int i=0; i<alto; i++){
+			for(int j=0; j<ancho; j++){
+				System.out.print( mapa[i][j]);
+			}
+			System.out.printf("\n");
+		}
+	}
+	
+	
+	public void action(){
+		
+		verMapa();
+		
+	}
+	
+	public boolean done(){
+		return true;
+	}
+	
+	
+	
+	
+}

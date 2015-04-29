@@ -1,0 +1,239 @@
+package Behaviours;
+
+import java.util.ArrayList;
+
+import jade.core.AID;
+import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.DataStore;
+import jade.domain.FIPANames.InteractionProtocol;
+import jade.lang.acl.ACLMessage;
+
+public class B_Aestrella extends Behaviour {
+
+	private ArrayList<B_Analiza> Abiertos;        // Lista de Estados abiertos (Aún no visitados).
+	private ArrayList<B_Analiza> Cerrados;        // Lista de Estados cerrados (Ya visitados).
+	private ArrayList<B_Analiza> CaminoSol;       // Lista que contendrá el camino solucionado.
+	private int visitados;					   // Experimentacion. Lleva la cuenta de los nodos Visitados.
+	private int abiertosMax;                   // Experimentación. Lleva la cuenta del número máximo de Estados Abiertos.
+	private int cerradosMax;                   // Experimentación. Lleva la cuenta del número máximo de Estados Cerrados.
+
+	
+	public B_Aestrella(B_Analiza inicial) {
+		Abiertos=new ArrayList<B_Analiza>();
+		Cerrados=new ArrayList<B_Analiza>();
+		CaminoSol = new ArrayList<B_Analiza>();
+		visitados=0;
+		abiertosMax=0;
+		cerradosMax=0;
+		AStar(inicial);
+	}
+	
+	public void AStar(B_Analiza inicial){
+		Abiertos.add(inicial);
+		B_Analiza actual=Abiertos.get(0);
+		ArrayList<B_Analiza> hijos=new ArrayList<B_Analiza>();
+		
+		while((actual.esFinal()==false)&&(!Abiertos.isEmpty())){
+			
+			Abiertos.remove(0);
+			Cerrados.add(actual);
+			eCerradosmax();
+			hijos=actual.genHijos();
+			repeat(hijos);
+		
+			int i=0,j=0;
+			boolean Correcto=false;
+			while(j<hijos.size()){
+				while(i<Abiertos.size()&&(!Correcto)){
+					if(Abiertos.get(i).getCosteTotal()>hijos.get(j).getCosteTotal()){
+						
+						Abiertos.add(i, hijos.get(j));
+						eAbiertosmax();
+						Correcto=true;
+				
+					}
+				
+					i++;
+				}
+				
+				if(!Correcto){
+				
+					Abiertos.add(hijos.get(j));
+					eAbiertosmax();
+				}
+				
+				j++;
+				i=0;
+				Correcto=false;
+			}
+	
+			if(!Abiertos.isEmpty()){
+				visitados++;
+				int posicion=AbiertosMejorCoste();
+				actual=Abiertos.get(posicion);
+			}
+		}
+		if(actual.esFinal()){
+			
+			CaminoSol.add(actual);
+			solucionar();
+			
+		}
+		else System.out.println("Solucion no encontrada.");
+		
+	}
+	
+	public int AbiertosMejorCoste(){
+		
+		int MenorCoste=Abiertos.get(0).getCosteTotal();
+		int posicion=0;
+		
+		for(int i=0; i<Abiertos.size()-1; i++){
+			if(MenorCoste>Abiertos.get(i+1).getCosteTotal()){
+				MenorCoste=Abiertos.get(i+1).getCosteTotal();
+				posicion=i+1;
+			}
+		}
+		
+		return posicion;
+	}
+	
+	
+	public void solucionar(){
+		
+		System.out.println("Camino encontrado");
+		int i = 0;
+	
+		while(CaminoSol.get(i).getMove()!=8){
+	
+			CaminoSol.add(CaminoSol.get(i).mPadre());
+			i++;
+			
+		}
+		invertirCaminoSol();
+		
+	}
+	
+	public void invertirCaminoSol(){  
+		
+		ArrayList<B_Analiza> Aux=new ArrayList<B_Analiza>();
+		for (int i=CaminoSol.size(); i>0; i--){
+			Aux.add(CaminoSol.get(i-1));
+		}
+			
+		CaminoSol=Aux;
+		
+	}
+	/*public final void getCamino(){
+		
+		System.out.print("Camino:\n");
+			
+		for(int m = 0; m<CaminoSol.size(); m++){
+			CaminoSol.get(m).verEstado();
+			System.out.print("-->");
+		}
+			
+	}*/
+
+	
+	
+	public int TamCamino(){
+		return CaminoSol.size();
+	}
+
+	
+	
+
+	
+	public int eVisitados(){
+		return visitados;
+	}
+	
+public void repeat(ArrayList<B_Analiza> Hijo){
+		
+		
+		int a=0;
+		while(a<Abiertos.size()){
+			int i=0;
+			while(i<Hijo.size()){
+				if(Hijo.get(i).esigual(Abiertos.get(a))){
+					if(Abiertos.get(a).getCosteTotal()<=Hijo.get(i).getCosteTotal()){	
+						
+						Hijo.remove(Hijo.get(i));
+					
+					}
+					
+				}
+				i++;
+			}
+			a++;
+		}
+		
+		int c=0;
+		while(c<Cerrados.size()){
+			int i=0;
+			while(i<Hijo.size()){
+				if(Hijo.get(i).esigual(Cerrados.get(c))){
+					if(Cerrados.get(c).getCosteTotal()<=Hijo.get(i).getCosteTotal()){
+						
+					Hijo.remove(Hijo.get(i));
+				
+					}
+
+				}
+				i++;
+			}
+			
+			c++;
+		}
+		
+	}
+	
+	
+	public void eAbiertosmax(){
+		if( abiertosMax<Abiertos.size())
+			abiertosMax=Abiertos.size();
+	}
+	
+	
+	
+
+	
+	public int eAbiertos(){
+		return abiertosMax;
+	}
+	
+	
+	
+	public void eCerradosmax(){
+		if( cerradosMax<Cerrados.size())
+			cerradosMax=Cerrados.size();
+	}
+	
+	
+	
+	public int eCerrados(){
+		return cerradosMax;
+	}
+	
+	public void action(){
+		System.out.println("PASO: "+CaminoSol.get(1).getMove());
+		
+		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+		msg.addReceiver(new AID("entorno3213",AID.ISLOCALNAME));
+		String a=Integer.toString(CaminoSol.get(1).getMove());
+		msg.setContent("7a");
+		msg.setProtocol(InteractionProtocol.FIPA_REQUEST);
+		
+		DataStore st= new DataStore();
+		st=CaminoSol.get(1).getDataStore();
+		myAgent.addBehaviour(new B_conexPlat(myAgent, msg, st));
+				//new B_enviaMove("entorno3213","7a",3));
+	}
+	
+	public boolean done(){
+		return true;
+	}
+	
+}
