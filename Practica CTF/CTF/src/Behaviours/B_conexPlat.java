@@ -26,7 +26,7 @@ public class B_conexPlat extends SimpleAchieveREInitiator{
 	//handleInform nos da la posicion en la que estamos!
 	public void handleAgree(ACLMessage msg) {System.out.printf("Aceptado");}
 	public void handleRefuse(ACLMessage msg) {System.out.printf("Rechazado");  }
-	public void handleInform(ACLMessage msg) {System.out.printf(" Inf: "+msg.getContent()+"\n"); myAgent.addBehaviour(new B_Analiza(msg)); }
+	public void handleInform(ACLMessage msg) {System.out.printf(" Inf: "+msg.getContent()+"\n"); B_Analiza A=new B_Analiza(msg, myAgent.getClass().getName()); myAgent.addBehaviour(new B_Aestrella(A, myAgent.getClass().getName())); }
 	public void handleNotUnderstood(ACLMessage msg) {System.out.printf("No entendido");  }
 	public void handleOutOfSequence(ACLMessage msg) { System.out.printf("Te pasaste"); }
 	
