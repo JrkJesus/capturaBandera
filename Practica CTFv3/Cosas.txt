@@ -1,0 +1,3 @@
+Si un agente muere llevando la bandera el servidor no envia la posicion de la nueva bandera.
+
+Por alguna razon, los agentes que defienden la base quedan saltando entre la base y las posiciones diagonales de esta. Deberían quedar parados una de las posiciones en cruz.
