@@ -52,6 +52,9 @@ public class B_pagAmar extends Behaviour{
 					if(myAgent.getClass().getName().equals("Agentes.Enemigo")){
 						ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
 						msg.addReceiver(creadores[i]);
+						//String Mensaj= new String();
+						//Mensaj.concat(Enemigo.getEquipo()+Enemigo.getClave());
+					//	msg.setContent(Mensaj);
 						msg.setContent(Enemigo.getEquipo()+Enemigo.getClave());
 						msg.setProtocol(InteractionProtocol.FIPA_REQUEST);
 						Enemigo.setSer(creadores[i]);
@@ -64,6 +67,16 @@ public class B_pagAmar extends Behaviour{
 				}
 				else{
 					System.out.println("Hay mas de un agente ofreciendo el servicio del servidor");
+					
+					ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+					msg.addReceiver(Inicial.getSer());
+					msg.setContent(Inicial.getEquipo()+Inicial.getClave());
+					msg.setProtocol(InteractionProtocol.FIPA_REQUEST);
+					
+			
+					B_conexPlat a= new B_conexPlat(myAgent,msg);
+					myAgent.addBehaviour(a);
+				
 				}
 				
 			}
@@ -73,6 +86,49 @@ public class B_pagAmar extends Behaviour{
 		if (creadores == null) {
 			myAgent.doDelete();
 		}
+		
+	
+		sd.setType("Tipo");
+		sd.setName("Gondor");
+		template.addServices(sd);
+		creadores = null;
+		try {
+			DFAgentDescription[ ] result = DFService.search(myAgent,template);
+			creadores = new AID[result.length];
+			
+		
+			for (int i=0; i< result.length; i++) {
+				
+				creadores[i] = result[i].getName();
+				System.out.println(creadores[i].getLocalName());
+				
+				if(result.length==1){
+					
+					if(myAgent.getClass().getName().equals("Agentes.Inicial")){
+						
+						Inicial.setComandante(creadores[i]);
+				
+						System.out.println("El comandante es: "+Inicial.getComandante().getLocalName());
+					}
+					
+				
+				
+				}
+				else{
+					System.out.println("Hay mas de un agente ofreciendo el servicio del Brigadier");
+					
+				
+				}
+				
+			}
+		} catch (FIPAException fe) {
+			creadores = null; fe.printStackTrace();
+		}
+		if (creadores == null) {
+			myAgent.doDelete();
+		}
+		
+		
 	}
 	
 	public boolean done(){

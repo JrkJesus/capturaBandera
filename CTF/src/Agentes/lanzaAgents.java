@@ -44,31 +44,42 @@ public class lanzaAgents extends Agent{
 		
 		PlatformController plataforma = this.getContainerController();
 		AgentController control;
-		
+		int j=5;
+		for (int i=0; i<5; i++){
 
-			for (int j = 0; j < 5; j++) {
+
+			
+			try {
+				control = plataforma.createNewAgent("Jugador"+i,"Agentes.Inicial", args) ;
+				control.start();
+				
+			}
+			catch (ControllerException e ) {
+				e.printStackTrace( );
+			
+			}
+			try{
+				Thread.sleep(5);
+				}
+				catch(Exception e){}
+			
+			//setInfo();
+			//Enemigo.setInf(Equipo,Clave);
+			try {
+				control = plataforma.createNewAgent("Jugador"+j,"Agentes.Enemigo", args) ;
+				control.start();
+				j++;
+			}
+			catch (ControllerException e ) {
+				e.printStackTrace( );
 				
 			
-				try {
-					control = plataforma.createNewAgent("agenteA_0"+j,"Agentes.Inicial", args) ;
-					control.start();
-				}
-				catch (ControllerException e ) {
-					e.printStackTrace( );
-				
-				}
-		
-				//setInfo();
-				//Enemigo.setInf(Equipo,Clave);
-				try {
-					control = plataforma.createNewAgent("agenteB_0"+j,"Agentes.Enemigo", args) ;
-					control.start();
-				}
-				catch (ControllerException e ) {
-					e.printStackTrace( );
-				
-				}
 			}
+			try{
+			Thread.sleep(250);
+			}
+			catch(Exception e){}
+		}
 	
 	}
 }

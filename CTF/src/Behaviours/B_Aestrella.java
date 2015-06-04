@@ -10,7 +10,7 @@ import jade.core.behaviours.DataStore;
 import jade.domain.FIPANames.InteractionProtocol;
 import jade.lang.acl.ACLMessage;
 
-public class B_Aestrella extends Behaviour {
+public class B_Aestrella {
 
 	private ArrayList<B_Analiza> Abiertos;        // Lista de Estados abiertos (Aún no visitados).
 	private ArrayList<B_Analiza> Cerrados;        // Lista de Estados cerrados (Ya visitados).
@@ -91,7 +91,7 @@ public class B_Aestrella extends Behaviour {
 	}
 	
 	public int AbiertosMejorCoste(){
-		/*
+		
 		int MenorCoste=Abiertos.get(0).getCosteTotal();
 		int posicion=0;
 		
@@ -100,9 +100,9 @@ public class B_Aestrella extends Behaviour {
 				MenorCoste=Abiertos.get(i+1).getCosteTotal();
 				posicion=i+1;
 			}
-		}*/
+		}
 		
-		return 0;
+		return posicion;
 	}
 	
 	
@@ -223,27 +223,10 @@ public void repeat(ArrayList<B_Analiza> Hijo){
 		return cerradosMax;
 	}
 	
-	public void action(){
-		
-		
-		String a="0";
-		if(CaminoSol.size()>1){
-			System.out.println("PASO: "+CaminoSol.get(1).getMove());
-			a=Integer.toString(CaminoSol.get(1).getMove());
-		}
-		
-	
-		AID aux=Inicial.getSer();
-	
-		
-		
-		myAgent.addBehaviour(new B_enviaMove(aux, a));
-				//new B_enviaMove("entorno3213","7a",3));
-		System.out.println("Fin");
+	public ArrayList<B_Analiza> getCaminoSol(){
+		return CaminoSol;
 	}
 	
-	public boolean done(){
-		return true;
-	}
+	
 	
 }

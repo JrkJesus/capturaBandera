@@ -14,10 +14,30 @@ public class Enemigo extends Agent{
 	private static String Equipo;
 	private static String Clave;
 	
+	private static int[] baseEnemiga=new int[2];
+	private static int[] baseAmiga=new int[2];
+	
 	/**
 	 * 
 	 */
-
+	
+	public static int[] getBaseEne(){
+		return baseEnemiga;
+	}
+	
+	public static int[] getBaseAmi(){
+		return baseAmiga;
+	}
+	
+	public static void setBaseEne(int[] a){
+		baseEnemiga[0]=a[0];
+		baseEnemiga[1]=a[1];
+	}
+	
+	public static void setBaseAmi(int[] a){
+		baseAmiga[0]=a[0];
+		baseAmiga[1]=a[1];
+	}
 	private Scanner entrada;
 	
 	public  void setInfo(){
@@ -43,9 +63,6 @@ public class Enemigo extends Agent{
 		return Ser;
 	}
 	
-	public static char getEquipoI(){
-		return Equipo.toCharArray()[0];
-	}
 	public static String getEquipo(){
 		return Equipo;
 	}
