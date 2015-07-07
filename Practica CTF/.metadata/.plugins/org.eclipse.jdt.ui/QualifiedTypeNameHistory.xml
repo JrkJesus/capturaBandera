@@ -4,17 +4,12 @@
 <fullyQualifiedTypeName name="jade.proto.SimpleAchieveREInitiator"/>
 <fullyQualifiedTypeName name="Behaviours.B_conexPlat"/>
 <fullyQualifiedTypeName name="jade.core.BehaviourID"/>
+<fullyQualifiedTypeName name="jade.lang.acl.ACLMessage"/>
 <fullyQualifiedTypeName name="java.util.Scanner"/>
+<fullyQualifiedTypeName name="Agentes.Inicial"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="jade.proto.AchieveREResponder"/>
 <fullyQualifiedTypeName name="jade.lang.acl.MessageTemplate"/>
-<fullyQualifiedTypeName name="jade.domain.FIPAAgentManagement.FailureException"/>
-<fullyQualifiedTypeName name="java.lang.Thread"/>
-<fullyQualifiedTypeName name="jade.lang.acl.ACLMessage"/>
-<fullyQualifiedTypeName name="jade.domain.FIPANames.InteractionProtocol"/>
-<fullyQualifiedTypeName name="jade.wrapper.PlatformController"/>
-<fullyQualifiedTypeName name="jade.wrapper.AgentController"/>
-<fullyQualifiedTypeName name="jade.wrapper.ControllerException"/>
-<fullyQualifiedTypeName name="Agentes.Inicial"/>
 <fullyQualifiedTypeName name="jade.core.Agent"/>
+<fullyQualifiedTypeName name="jade.domain.FIPAAgentManagement.FailureException"/>
 </qualifiedTypeNameHistroy>

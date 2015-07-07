@@ -1,0 +1,197 @@
+package Behaviours;
+
+import jade.core.behaviours.Behaviour;
+import jade.lang.acl.ACLMessage;
+
+public class B_Analiza extends Behaviour{
+
+	private int ancho, alto, visx, visy, x, y;
+	private char[][] mapa;
+	private int movim;  
+	
+	private B_Analiza padre;
+	
+	public B_Analiza(int anch, int alt, int visi, int visj, int i, int j){
+		
+		//Constructor a rellenar que será usado para crear los hijos.
+	}
+	public B_Analiza(ACLMessage A){
+		
+		movim=0;
+		
+		int i=0, j=0;
+		
+		String aux=A.getContent();
+		
+		int indicesfinales[];
+		
+		
+		while(!aux.substring(i,i+1).equals(",")){
+			
+			i++;
+		
+		}
+		
+		j=i+1;
+		while(!aux.substring(j,j+1).equals(",")){
+		
+			j++;
+		
+		}
+		
+		ancho=Integer.parseInt(aux.substring(0, i));
+		alto=Integer.parseInt(aux.substring(i+1,j));
+		
+		mapa=new char[alto][ancho];
+		
+		indicesfinales=new int[6+alto];
+		indicesfinales[0]=i;
+		indicesfinales[1]=j;
+		
+		j++;
+		i=2;
+		
+		int posx=0;
+		int posy=0;
+		
+		for(; j<aux.length();j++){
+			
+			if(i>5){
+				
+				mapa[posx][posy]=aux.charAt(j);
+				posy++;
+			
+				if(posy==ancho){
+					posx++;
+					posy=0;
+		
+				}
+			
+			}
+			
+			if(aux.substring(j,j+1).equals(",")){
+			
+				indicesfinales[i]=j;
+				i++;
+			
+			}
+		
+		}
+		
+		visx=Integer.parseInt(aux.substring(indicesfinales[1]+1, indicesfinales[2]));
+		visy=Integer.parseInt(aux.substring(indicesfinales[2]+1, indicesfinales[3]));
+		x=Integer.parseInt(aux.substring(indicesfinales[3]+1, indicesfinales[4]));
+		y=Integer.parseInt(aux.substring(indicesfinales[4]+1, indicesfinales[5]));
+				
+	}
+	
+	
+	
+	public void verMapa(){
+		
+		for(int i=0; i<alto; i++){
+		
+			for(int j=0; j<ancho; j++){
+			
+				System.out.print( mapa[i][j]);
+			
+			}
+			
+			System.out.printf("\n");
+		
+		}
+	
+	}
+	
+	public void verAtributos(){
+		
+		System.out.println("Alto:"+alto+"\nAncho: "+ancho);
+		System.out.println("VisAlto:"+visy+"\nVisAncho: "+visx);
+		System.out.println("PosAlto:"+y+"\nPosAncho: "+x);
+	
+	}
+	
+	public B_Analiza move(int moves, int i, int j){
+		
+		switch (moves){
+		
+		case 4://Sur
+			this.setMapa(i, j, i+1, j);
+			this.resetPos(i, j+1);
+			
+			break;
+			
+		case 1://Este
+			this.setMapa(i, j, i, j+1);
+			this.resetPos(i+1, j);
+			break;
+			
+		case 3://Norte
+			this.setMapa(i, j, i-1, j);
+			this.resetPos(i, j-1);
+			break;
+			
+		case 2://Oeste
+			this.setMapa(i, j, i, j-1);
+			this.resetPos(i-1, j);
+			
+			break;
+		
+		case 22://Noroeste
+			this.setMapa(i, j, i-1, j-1);
+			this.resetPos(i-1, j);
+			
+			break;
+			
+		case 21://Noreste
+			this.setMapa(i, j, i-1, j+1);
+			this.resetPos(i-1, j);
+			
+			break;
+			
+		case 24://Sureste
+			this.setMapa(i, j, i+1, j-1);
+			this.resetPos(i-1, j);
+			
+			break;
+			
+		case 23: //Suroeste
+			this.setMapa(i, j, i+1, j+1);
+			this.resetPos(i-1, j);
+			
+			break;
+		}
+			
+		
+		return this;
+	}
+	
+	public void resetPos(int i, int j){
+		
+		mapa[i][j]=2;
+		
+	}
+	
+	public void setMapa(int i, int j, int m, int n){
+			
+		mapa[i][j]=mapa[m][n];
+			
+	}
+
+	
+	public void action(){
+		
+		verMapa();
+		verAtributos();
+	}
+	
+	public boolean done(){
+	
+		return true;
+	
+	}
+	
+	
+	
+	
+}

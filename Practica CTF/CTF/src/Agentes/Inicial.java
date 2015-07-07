@@ -11,7 +11,7 @@ import jade.core.AID;
 
 public class Inicial extends Agent{
 
-	private static AID Ser;
+	
 	private static String Equipo;
 	private static String Clave;
 	
@@ -21,7 +21,7 @@ public class Inicial extends Agent{
 	private static final long serialVersionUID = 1L;
 	private Scanner entrada;
 	
-	public  void setInfo(){
+	public void setInfo(){
 		System.out.println("Introduzca Equipo:");
 		entrada = new Scanner(System.in);
 		Equipo=entrada.next();
@@ -29,33 +29,24 @@ public class Inicial extends Agent{
 		Clave=entrada.next();
 	}
 	
-	public static void setInf(String Eq, String Cl){
-		Equipo=Eq;
-		Clave=Cl;
-	}
-	
-	public static void setSer(AID A){
-		
-		Ser=A;
-		
-	}
-	
-	public static AID getSer(){
-		return Ser;
-	}
 	
 	public static String getEquipo(){
 		return Equipo;
 	}
 	
-	public static String getClave(){
-		return Clave;
-	}
-	
 	public void setup(){
+		//String Equipo="8";
+		//String Clave="a";
+		setInfo();
+		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+		msg.addReceiver(new AID("entorno3213",AID.ISLOCALNAME));
+		msg.setContent(Equipo+Clave);
+		msg.setProtocol(InteractionProtocol.FIPA_REQUEST);
 		
-		this.addBehaviour(new B_pagAmar());
 		
+		B_conexPlat a= new B_conexPlat(this,msg);
+		this.addBehaviour(a);
+
 		
 	}
 }

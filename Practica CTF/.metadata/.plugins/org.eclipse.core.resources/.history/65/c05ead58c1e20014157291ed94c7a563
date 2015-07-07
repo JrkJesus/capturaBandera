@@ -1,0 +1,30 @@
+/*package Behaviours;
+
+import jade.core.AID;
+import jade.core.Agent;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
+import jade.proto.AchieveREResponder;
+import jade.core.behaviours.OneShotBehaviour;
+import jade.domain.FIPAAgentManagement.FailureException;
+
+
+public class B_enviaMove extends AchieveREResponder{
+    	
+	public B_enviaMove(Agent a,MessageTemplate mt) {
+    	super(a,mt);
+    }
+
+		AID Destino;
+		String Mensaje;
+		int Intencion;
+		
+		
+	protected ACLMessage prepareResultNotification(ACLMessage request,ACLMessage response) throws FailureException{
+		ACLMessage A=request.createReply();
+		A.setContent("2");
+		
+		return A;
+	}
+
+}*/

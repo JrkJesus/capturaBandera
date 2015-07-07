@@ -20,14 +20,13 @@ public class B_recibeMens extends Behaviour {
 			equis=true;
 			System.out.println("Estoy recibiendo: "+myAgent.getLocalName());
 			System.out.println(envio.getSender().getLocalName() + ": " + envio.getContent());
-	
+			
 			int al=B_Analiza.getalto();
 			int an=B_Analiza.getancho();
 			int vx=B_Analiza.getvisx();
 			int vy=B_Analiza.getvisy();
 			B_Analiza.setContador();
-			B_Analiza A=new B_Analiza(envio, an, al, vx, vy, myAgent.getClass().getName());
-			myAgent.addBehaviour(new B_Aestrella(A, myAgent.getClass().getName()));
+			myAgent.addBehaviour(new B_Analiza(envio, an, al, vx, vy ));
 		/*	if(envio.getSender().getLocalName().equalsIgnoreCase("Duplicamelo")){
 				
 				int entero = Integer.parseInt(envio.getContent());
